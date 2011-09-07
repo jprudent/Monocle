@@ -95,16 +95,13 @@
             { panels: Monocle.Panels.Marginal },
             function(reader){
               var selector = Monocle.Controls.Selector(reader,
-                function(txt){
+                function(txt,paragraph){
                   console.info(txt);
                   document.getElementById("selector_txt_marginal").value = txt;
-                },
-                "vbm",
-                function(paragraph) {
                   console.info(paragraph);
                   document.getElementById("selector_paragraph_marginal").value = paragraph;
-                }
-            );
+                },
+                "vbm");
               reader.addControl(selector,'invisible');
             }
           );
