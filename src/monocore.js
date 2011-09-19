@@ -8,6 +8,7 @@
 //= require "core/place"
 //= require "core/component"
 //= require "controls/panel"
+//= require "controls/placesaver"
 //= require "controls/selector"
 //= require "panels/marginal"
 //= require "dimensions/vert"

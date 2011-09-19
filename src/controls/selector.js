@@ -26,11 +26,16 @@ Monocle.Controls.Selector = function (reader,callback,paragraphClass) {
 
   
   
-  function callCallback(){
+  function callCallback(event){
     //note: 'this' is the element that fired the event
-    var txt = (this.all) ? this.ownerDocument.selection.createRange().text : this.ownerDocument.getSelection();  
+    //in firefox, chrome and opera, use this.ownerDocument.getSelection()
+    //in ie and opera this.all is defined, but only in ie this.ownerDocument.selection is defined
+    var txt = (this.all && this.ownerDocument.selection) ? this.ownerDocument.selection.createRange().text : this.ownerDocument.getSelection();
     var paragraph = this.innerHTML;
-    p.callback(txt,paragraph);
+    //call txt.toString() in case it's a DOMSelection that is returned
+    //if it's a string, this is the same
+    if(txt) { p.callback(txt.toString(),paragraph); }
+    else { p.callback(txt,paragraph)}
   }
   
   function addSelectorCapacity() {
@@ -40,10 +45,10 @@ Monocle.Controls.Selector = function (reader,callback,paragraphClass) {
       //add mouseup event for all paragraphs
       var paragraphs = iframe.getElementsByClassName(p.paragraphClass);
       for(var j=0; j < paragraphs.length; j++) {
-        paragraphs[j].addEventListener("mouseup",callCallback)
+        paragraphs[j].addEventListener("mouseup",callCallback,false);
       }
     }
-    p.console.info("added selector capacity to iframes")
+    p.console.info("added selector capacity to iframes");
   }
   
   function createControlElements(cntr) {
